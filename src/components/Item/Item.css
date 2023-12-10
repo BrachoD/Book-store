@@ -1,0 +1,38 @@
+.buttom-color{
+    background-color: #ab0404;
+    border-width: 0px 0px 0px 0px;
+}
+
+.buttom-color:hover{
+    background-color: #700b0b;
+}
+
+.card-margin{
+    margin: 10px 50px 10px 50px 
+}
+
+.card-color{
+    background-color: #E7DFE8;
+}
+
+.card-img{
+    width: 120px;
+    height: 175px;
+    border-style: groove;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0px;
+}
+
+.card-img-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+}
+
+.card-title-container{
+    display: flex;
+    align-items: center;
+    min-height: 140px;
+}

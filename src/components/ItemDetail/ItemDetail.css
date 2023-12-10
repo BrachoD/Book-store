@@ -1,0 +1,38 @@
+.detail-card-body{
+    /* background-color: red; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* align-items: center; */
+}
+
+.detail-card-body img{
+    width: 180px;
+    height: 262.5px;
+    margin-right: 20px;
+}
+
+.card-text{
+    color: black;
+    text-align: justify;
+    margin-left: 10px;
+}
+
+.detail-card-body div{
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 10px;
+    
+}
+
+.detail-card-body h5{
+    margin-left: 10px;
+}
+
+.detail-card-body h6{
+    margin-left: 10px;
+}
