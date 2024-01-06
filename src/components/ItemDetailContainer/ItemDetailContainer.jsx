@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { getProductById } from '../../data/asyncMock'
 import ItemDetail from '../ItemDetail/ItemDetail'
 import Spinner from 'react-bootstrap/Spinner';
+import LoaderComponent from '../LoaderComponent/LoaderComponent';
 
 const ItemDetailContainer = () => {
     const [product, setProduct] = useState({})
@@ -21,9 +22,8 @@ const ItemDetailContainer = () => {
 
     return (
         <div>
-            {isLoading ? <Spinner animation="border" variant="danger" /> :
-                <ItemDetail {...product} />
-            }
+            <LoaderComponent loading={isLoading}/>
+            {!isLoading && <ItemDetail {...product} />}
         </div>
     )
 }

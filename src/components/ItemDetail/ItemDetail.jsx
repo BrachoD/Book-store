@@ -1,18 +1,22 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './ItemDetail.css'
 import ItemCount from '../ItemCount/ItemCount';
 import { Link } from 'react-router-dom'
+import CartContext from '../../context/CartContext'
 
 
-const ItemDetail = ({ author, category, img, name, price, stock, description }) => {
+const ItemDetail = ({id, author, category, img, name, price, stock, description }) => {
 
     const [quantity, setQuantity] = useState(0)
+    const { addItem } = useContext(CartContext)
 
     const onAdd = (quantity) => {
         setQuantity(quantity)
+        const newProduct = {id, author, category, img, name, price}
+        addItem(newProduct, quantity)
         console.log(`You added ${quantity} products`)
     }
 

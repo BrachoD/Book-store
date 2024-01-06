@@ -15,7 +15,7 @@ const NavBar = () => {
             <Container>
                 <Navbar.Brand ><Link to={'/'}><img className="navbar-logo" src={booklogo} /></Link></Navbar.Brand>
                 <Nav>
-                <Link to={'/'}><Nav.Item className='active nav-link'>Home</Nav.Item></Link>
+                    <Link to={'/'}><Nav.Item className='active nav-link'>Home</Nav.Item></Link>
                     <NavDropdown active='true' title="Genre" id="navbarScrollingDropdown">
                         <Link to={`/category/Children's Fiction`}><p className='dropdown-item'>Children's Fiction</p></Link>
                         <Link to={'/category/Fantasy'}><p className='dropdown-item'>Fantasy</p></Link>
@@ -31,7 +31,9 @@ const NavBar = () => {
                         <Link to={'/author/William Shakespeare'}><p className='dropdown-item'>William Shakespeare</p></Link>
                     </NavDropdown>
                 </Nav>
-                <CartWidget />
+                <Link to={'/cart'}>
+                    <CartWidget />
+                </Link>
             </Container>
         </Navbar>
     )

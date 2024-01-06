@@ -5,6 +5,7 @@ import './ItemListContainer.css'
 import { getProductByCategory, getProductByAuthor, getProducts } from '../../data/asyncMock'
 import ItemList from '../ItemList/ItemList'
 import { useParams } from 'react-router-dom'
+import LoaderComponent from '../LoaderComponent/LoaderComponent';
 
 const ItemListContainer = ({ title }) => {
     const [data, setData] = useState([])
@@ -40,9 +41,8 @@ const ItemListContainer = ({ title }) => {
     return (
         <div>
             <h1>{title}</h1>
-            {isLoading ? <Spinner animation="border" variant="danger" /> :
-            <ItemList data={data} />
-            }
+            <LoaderComponent loading={isLoading}/>
+            {!isLoading && <ItemList data={data} />}
         </div >
     )
 }
