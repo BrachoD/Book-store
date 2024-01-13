@@ -4,6 +4,9 @@ import { getProductById } from '../../data/asyncMock'
 import ItemDetail from '../ItemDetail/ItemDetail'
 import Spinner from 'react-bootstrap/Spinner';
 import LoaderComponent from '../LoaderComponent/LoaderComponent';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../main'
+
 
 const ItemDetailContainer = () => {
     const [product, setProduct] = useState({})
@@ -12,12 +15,23 @@ const ItemDetailContainer = () => {
 
     useEffect(() => {
 
-        getProductById(itemId)
-            .then((prod) => {
-                setProduct(prod)
-            })
-            .catch((err) => console.log(err))
-            .finally(() => setIsLoading(false))
+        const getProduct = async() => {
+            const queryRef = doc(db, 'products', itemId)
+
+            const response = await getDoc(queryRef)
+
+            const newProduct = {
+                ...response.data(),
+                id: response.id
+            }
+
+            setTimeout(()=> {
+                setProduct(newProduct)
+                setIsLoading(false)
+
+            },500)
+        }
+        getProduct()
     }, [itemId])
 
     return (

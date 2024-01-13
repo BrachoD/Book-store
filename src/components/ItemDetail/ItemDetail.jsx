@@ -15,7 +15,7 @@ const ItemDetail = ({id, author, category, img, name, price, stock, description 
 
     const onAdd = (quantity) => {
         setQuantity(quantity)
-        const newProduct = {id, author, category, img, name, price}
+        const newProduct = {id, author, category, img, name, price, stock}
         addItem(newProduct, quantity)
         console.log(`You added ${quantity} products`)
     }

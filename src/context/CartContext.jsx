@@ -2,22 +2,22 @@ import React, { createContext, useState } from "react"
 
 const Context = createContext()
 
-export const CartContextProvider = ({children}) => {
-    const [ cart, setCart ] = useState([])
+export const CartContextProvider = ({ children }) => {
+    const [cart, setCart] = useState([])
 
-    const addItem = (productToAdd, quantity) =>{
-        const newObj = {...productToAdd, quantity}
+    const addItem = (productToAdd, quantity) => {
+        const newObj = { ...productToAdd, quantity }
 
-        if(isInCart(newObj.id)){
+        if (isInCart(newObj.id)) {
             const updatedCart = cart.map((el) => {
-                if(el.id === newObj.id){
+                if (el.id === newObj.id) {
                     el.quantity += newObj.quantity
                 }
                 return el
-        })
-        setCart(updatedCart)
+            })
+            setCart(updatedCart)
         }
-        else{
+        else {
             setCart([...cart, newObj])
         }
     }
@@ -40,6 +40,30 @@ export const CartContextProvider = ({children}) => {
         setCart([])
     }
 
+    const decrementItem = (productId) => {
+
+        const updatedCart = cart.map((el) => {
+            if (el.id === productId) {
+                const newQuantity = Math.max(el.quantity - 1, 1)
+                return {...el, quantity: newQuantity}
+            }
+            return el
+        })
+        setCart(updatedCart)
+    }
+
+    const incrementItem = (productId, stock) => {
+
+        const updatedCart = cart.map((el) => {
+            if (el.id === productId) {
+                const newQuantity = Math.min(el.quantity + 1, stock)
+                return {...el, quantity: newQuantity}
+            }
+            return el
+        })
+        setCart(updatedCart)
+    }
+
     const getQuantity = () => {
         let count = 0
         cart.forEach((el) => {
@@ -47,10 +71,9 @@ export const CartContextProvider = ({children}) => {
         })
         return count
     }
-    console.log(cart);
 
     return (
-        <Context.Provider value={{ cart, setCart, addItem, getTotal, removeItem, clearCart, getQuantity }}>{children}</Context.Provider>
+        <Context.Provider value={{ cart, setCart, addItem, getTotal, removeItem, clearCart, getQuantity, decrementItem, incrementItem }}>{children}</Context.Provider>
     )
 }
 

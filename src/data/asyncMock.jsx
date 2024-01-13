@@ -1,4 +1,4 @@
-const products = [
+export const products = [
     {
         id: 1, name: 'El túnel', author: 'Ernesto Sabato', category: 'Non-Fiction', price: 18, stock: 4, img: 'https://i.postimg.cc/d0vLqxdg/eltunel.jpg', 
 

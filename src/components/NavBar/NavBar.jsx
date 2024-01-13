@@ -24,7 +24,7 @@ const NavBar = () => {
                         <Link to={'/category/Tragedy'}><p className='dropdown-item'>Tragedy</p></Link>
                     </NavDropdown>
                     <NavDropdown active='true' title="Author" id="navbarScrollingDropdown">
-                        <Link to={'/author/Caroline Peckham'}><p className='dropdown-item'>Caroline Peckham</p></Link>
+                        <Link to={'/author/Caroline Peckham & Susanne Valenti'}><p className='dropdown-item'>Caroline Peckham</p></Link>
                         <Link to={'/author/Ernesto Sabato'}><p className='dropdown-item'>Ernesto Sabato</p></Link>
                         <Link to={'/author/George R. R. Martin'}><p className='dropdown-item'>George R. R. Martin</p></Link>
                         <Link to={'/author/Rick Riordan'}><p className='dropdown-item'>Rick Riordan</p></Link>

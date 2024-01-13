@@ -6,6 +6,9 @@ import { getProductByCategory, getProductByAuthor, getProducts } from '../../dat
 import ItemList from '../ItemList/ItemList'
 import { useParams } from 'react-router-dom'
 import LoaderComponent from '../LoaderComponent/LoaderComponent';
+import { collection, where, query, getDocs } from 'firebase/firestore';
+import { db } from '../../main'
+
 
 const ItemListContainer = ({ title }) => {
     const [data, setData] = useState([])
@@ -14,29 +17,55 @@ const ItemListContainer = ({ title }) => {
     const { authorId } = useParams()
 
     useEffect(() => {
-        if (categoryId) {
-            getProductByCategory(categoryId)
-                .then((prod) => setData(prod))
-                .catch((err) => console.log(err))
-                .finally(() => setIsLoading(false))
-        }
-        else if (authorId){
-            getProductByAuthor(authorId)
-                .then((prod) => setData(prod))
-                .catch((err) => console.log(err))
-                .finally(() => setIsLoading(false))
 
-        }
-        else {
-            getProducts()
-                .then((prod) => {
-                    setData(prod)
-                })
-                .catch((err) => console.log(err))
-                .finally(() => setIsLoading(false))
 
+        const getData = async() => {
+
+            const queryRef = categoryId ? query(collection(db, 'products'), where('category', '==', categoryId)) : 
+            authorId ? query(collection(db, 'products'), where('author', '==', authorId)) : 
+            collection(db, 'products')
+
+            const response = await getDocs(queryRef)
+
+            const products = response.docs.map((doc) => {
+                const newProduct = {
+                    ...doc.data(),
+                    id: doc.id
+                }
+                return newProduct
+            })
+            setTimeout(() => {
+                setData(products)
+                setIsLoading(false)
+            },1000)
         }
+        getData()
+
+        // if (categoryId) {
+        //     getProductByCategory(categoryId)
+        //         .then((prod) => setData(prod))
+        //         .catch((err) => console.log(err))
+        //         .finally(() => setIsLoading(false))
+        // }
+        // else if (authorId){
+        //     getProductByAuthor(authorId)
+        //         .then((prod) => setData(prod))
+        //         .catch((err) => console.log(err))
+        //         .finally(() => setIsLoading(false))
+
+        // }
+        // else {
+        //     getProducts()
+        //         .then((prod) => {
+        //             setData(prod)
+        //         })
+        //         .catch((err) => console.log(err))
+        //         .finally(() => setIsLoading(false))
+
+        // }
     }, [categoryId, authorId])
+
+    console.log(data)
 
     return (
         <div>
