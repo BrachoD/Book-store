@@ -6,6 +6,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import LoaderComponent from '../LoaderComponent/LoaderComponent';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../main'
+import './ItemDetailContainer.css'
 
 
 const ItemDetailContainer = () => {
@@ -35,7 +36,8 @@ const ItemDetailContainer = () => {
     }, [itemId])
 
     return (
-        <div>
+        <div className='item-detail-container'>
+            
             <LoaderComponent loading={isLoading}/>
             {!isLoading && <ItemDetail {...product} />}
         </div>

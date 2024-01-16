@@ -7,7 +7,8 @@ const LoaderComponent = ({ loading }) => {
 
     if (loading) {
         return (
-            <div>
+            <div className='spinner'>
+                <h4>Loading...</h4>
                 <Spinner animation="border" variant="danger" />
             </div>
         )

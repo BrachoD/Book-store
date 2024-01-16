@@ -1,0 +1,24 @@
+.counter-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: black;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 1.5px;
+}
+
+.counter-buttons h5{
+    margin-bottom: 0px;
+}
+.counter-border{
+    
+    width: 50px;
+    
+}
+
+.buttom-margin{
+  
+    margin-left: 20px;
+    margin-right: 20px;
+}

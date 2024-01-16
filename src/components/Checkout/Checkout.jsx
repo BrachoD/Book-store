@@ -3,10 +3,11 @@ import CartContext from '../../context/CartContext'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../main'
+import './Checkout.css'
+import Swal from 'sweetalert2';
 
 const Checkout = () => {
     const [user, setUser] = useState({
@@ -16,215 +17,227 @@ const Checkout = () => {
         email: '',
         repeatEmail: '',
         address: '',
+        adrress2: '',
         city: '',
         state: '',
         zipCode: '',
 
     })
-    const [emailMatch, setEmailMatch] = useState(true)
-    const [formErrors, setFormErrors] = useState({})
-    const { cart, getTotal, clearcart } = useContext(CartContext)
+
+    const { cart, getTotal, clearCart } = useContext(CartContext)
+    const [validated, setValidated] = useState(false);
 
     const updateUser = (event) => {
+
         setUser((user) => ({
             ...user,
             [event.target.name]: event.target.value
         }))
-    }
 
-    const validateEmail = () => {
-
-        if (user.email === user.repeatEmail) {
-            setEmailMatch(true)
-        } else {
-            setEmailMatch(false)
-        }
-    }
-
-    console.log(user)
-
-    const validateForm = () => {
-        const errors = {}
-
-        if (!user.name) {
-            errors.name = 'Please enter a name.'
-        }
-        if (!user.lastName) {
-            errors.lastName = 'Please enter a last name.'
-        }
-        if (!user.phone) {
-            errors.phone = 'Please enter a valid phone number.'
-        }
-        if (!user.email) {
-            errors.email = 'Please enter a valid email address.'
-        }
-        if (!user.repeatEmail) {
-            errors.repeatEmail = 'Please repeat your email address.'
-        }
-        if (!user.address) {
-            errors.address = 'Please enter an address.'
-        }
-        if (!user.city) {
-            errors.city = 'Please enter a city.'
-        }
-        if (!user.state) {
-            errors.state = 'Please enter a state.'
-        }
-        if (!user.zipCode) {
-            errors.zipCode = 'Please enter a zip code.'
-        }
-        console.log(errors)
-        setFormErrors(errors)
-        return Object.keys(errors).length === 0
     }
 
     const getOrder = () => {
-        const isFormValid = validateForm()
-        validateEmail()
-        if (isFormValid && emailMatch) {
 
-            const order = {
-                buyer: user,
-                items: cart,
-                total: getTotal()
-            }
-            const ordersCollection = collection(db, 'orders')
-
-            addDoc(ordersCollection, order)
-
-                .then(({ id }) => {
-                    console.log(`orden de compra generada con el Nro. ${id}`)
-                })
+        const order = {
+            buyer: user,
+            items: cart,
+            total: (getTotal() * 1.07).toFixed(2)
         }
+        const ordersCollection = collection(db, 'orders')
+
+        addDoc(ordersCollection, order)
+
+            .then(({ id }) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Your order was placed",
+                    text: `Your order with id: ${id} is being processed.`,
+                    footer: `Order total: $${order.total}`
+                });
+                clearCart()
+            })
     }
 
-    const [validated, setValidated] = useState(false);
-    console.log(validated)
+
+
     const handleSubmit = (event) => {
+
         const form = event.currentTarget;
-        console.log(form)
         event.preventDefault();
         event.stopPropagation();
+
         if (form.checkValidity() === false) {
-
-            console.log('checkValidity es false')
-            
-        }else{
-            getOrder()
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                html: "Something went wrong! Please check the fields in red.",
+            });
+        } else {
+            Swal.fire({
+                title: "Are you sure?",
+                html:
+                `<h4>Order details</h4>
+                <h6>Name: ${user.name} ${user.lastName}</h6>
+                <h6>Email: ${user.email}</h6>
+                <h6>Address: ${user.address}${user.adrress2}, ${user.city}, ${user.state}, ${user.zipCode}</h6>
+                <h5>Total: $${(getTotal() * 1.07).toFixed(2)}</h5>
+                `,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, place order!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    getOrder()
+                }
+            });
         }
-
         setValidated(true)
     }
 
+
     return (
-        <div>
-            <h1>Purchase Summary</h1>
-            <h3>{getTotal()}</h3>
+        <div className='d-flex flex-column align-items-center justify-content-center'>
+            <h1 className='mt-5'>Purchase Summary</h1>
 
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="4" controlId="validationCustom01">
-                        <Form.Label>First name</Form.Label>
-                        <Form.Control
+            <div className="cart-total-container container mt- mb-1" >
+                <div className="d-flex justify-content-center row">
+                    <div className="col-md-8">
+                        <div className="d-flex flex-column align-items-center justify-content-around mt-3 p-2 rounded">
+
+                            <div className="order-summary d-flex flex-row align-items-center justify-content-center">
+                                <div className='d-flex order-summary-cost flex-column align-items-start justify-content-start'>
+                                    <div className='cost-separator-checkout'>
+                                        <span className="font-weight-bold">Subtotal:</span>
+                                        <div></div>
+                                        <span className="font-weight-bold">${getTotal().toFixed(2)}</span>
+                                    </div>
+                                    <div className='cost-separator-checkout'>
+                                        <span className="font-weight-bold">Tax:</span>
+                                        <div></div>
+                                        <span className="font-weight-bold">${(getTotal() * 0.07).toFixed(2)}</span>
+                                    </div>
+                                    <div className='cost-separator-checkout mt-5'>
+                                        <span className="font-weight-bold">Total:</span>
+                                        <div></div>
+                                        <span className="font-weight-bold">${(getTotal() * 1.07).toFixed(2)}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className='form-container mt-3'>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} md="6" controlId="validationCustom01">
+                            <Form.Label>First name</Form.Label>
+                            <Form.Control
+                                required
+                                name='name'
+                                type="text"
+                                placeholder="John"
+                                onChange={updateUser}
+
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please provide a name.</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col} md="6" controlId="validationCustom02">
+                            <Form.Label>Last name</Form.Label>
+                            <Form.Control
+                                required
+                                name='lastName'
+                                type="text"
+                                placeholder="Doe"
+                                onChange={updateUser}
+
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please provide a last name.</Form.Control.Feedback>
+
+                        </Form.Group>
+
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} md="6" controlId="validationCustom04">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" placeholder="Email" required name='email' onChange={updateUser} />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please provide a valid email.</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col} md="6" controlId="validationCustom03">
+                            <Form.Label>Phone</Form.Label>
+                            <Form.Control
+                                required
+                                name='phone'
+                                type="text"
+                                placeholder="(999) 999 9999"
+                                onChange={updateUser}
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Please provide a valid phone number.</Form.Control.Feedback>
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} md="6" controlId="validationCustom06">
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control type="text" placeholder="Address" required name='address' onChange={updateUser} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid address.
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col} md="6" controlId="validationCustom07">
+                            <Form.Label>Address 2</Form.Label>
+                            <Form.Control type="text" placeholder="Suit/Apt/House" required name='address2' onChange={updateUser} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid address.
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-3">
+                        <Form.Group as={Col} md="6" controlId="validationCustom08">
+                            <Form.Label>City</Form.Label>
+                            <Form.Control type="text" placeholder="City" required name='city' onChange={updateUser} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid city.
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col} md="3" controlId="validationCustom09">
+                            <Form.Label>State</Form.Label>
+                            <Form.Control type="text" placeholder="State" required name='state' onChange={updateUser} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid state.
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col} md="3" controlId="validationCustom10">
+                            <Form.Label>Zip code</Form.Label>
+                            <Form.Control type="text" placeholder="Zip" required name='zipCode' onChange={updateUser} />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid zip.
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                    </Row>
+                    <Form.Group className="mb-3 d-flex flex-column align-items-center justify-content-center">
+                        <Form.Check
                             required
-                            name='name'
-                            type="text"
-                            placeholder="John"
-                            onChange={updateUser}
-
+                            label="Agree to terms and conditions"
+                            feedback="You must agree before submitting."
+                            feedbackType="invalid"
                         />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        <Button className='mt-2 buttom-color' type='submit'>Place order</Button>
                     </Form.Group>
-                    <Form.Group as={Col} md="4" controlId="validationCustom02">
-                        <Form.Label>Last name</Form.Label>
-                        <Form.Control
-                            required
-                            name='lastName'
-                            type="text"
-                            placeholder="Doe"
-                            onChange={updateUser}
-
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} md="4" controlId="validationCustom02">
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control
-                            required
-                            name='phone'
-                            type="text"
-                            placeholder="(999) 999 9999"
-                            onChange={updateUser}
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="text" placeholder="Email" required name='email' onChange={updateUser} />
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid email.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
-                        <Form.Label>Repeat Email</Form.Label>
-                        <Form.Control type="text" placeholder="Email" required name='repeatEmail' onChange={updateUser} />
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid email.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
-                        <Form.Label>Address</Form.Label>
-                        <Form.Control type="text" placeholder="Address" required name='address' onChange={updateUser} />
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid address.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-
-                </Row>
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
-                        <Form.Label>City</Form.Label>
-                        <Form.Control type="text" placeholder="City" required name='city' onChange={updateUser} />
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid city.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} md="3" controlId="validationCustom04">
-                        <Form.Label>State</Form.Label>
-                        <Form.Control type="text" placeholder="State" required name='state' onChange={updateUser} />
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid state.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} md="3" controlId="validationCustom05">
-                        <Form.Label>Zip code</Form.Label>
-                        <Form.Control type="text" placeholder="Zip" required name='zipCode' onChange={updateUser} />
-                        <Form.Control.Feedback type="invalid">
-                            Please provide a valid zip.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                </Row>
-                <Form.Group className="mb-3">
-                    <Form.Check
-                        required
-                        label="Agree to terms and conditions"
-                        feedback="You must agree before submitting."
-                        feedbackType="invalid"
-                    />
-                </Form.Group>
-                {/* <Button onClick={getOrder}>Submit form</Button> */}
-                <Button type='submit'>Submit form</Button>
-
-
-            </Form>
-            {formErrors.repeatEmail && (
-                <h1>{formErrors.repeatEmail}</h1>
-            )}
-            {!emailMatch && (
-                <h1>Email addresses do not match!</h1>
-            )}
+                </Form>
+            </div>
         </div>
     )
 }

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 const Item = ({ products }) => {
 
     return (
-        <div className="card-margin">
+        <div className="card-margin mb-5">
             <Card className="card-color ml-5 mr-5" style={{ width: '18rem' }}>
                 <div className='card-title-container'>
                     <Card.Body className="d-flex flex-column align-items-center text-center">

@@ -41,34 +41,10 @@ const ItemListContainer = ({ title }) => {
         }
         getData()
 
-        // if (categoryId) {
-        //     getProductByCategory(categoryId)
-        //         .then((prod) => setData(prod))
-        //         .catch((err) => console.log(err))
-        //         .finally(() => setIsLoading(false))
-        // }
-        // else if (authorId){
-        //     getProductByAuthor(authorId)
-        //         .then((prod) => setData(prod))
-        //         .catch((err) => console.log(err))
-        //         .finally(() => setIsLoading(false))
-
-        // }
-        // else {
-        //     getProducts()
-        //         .then((prod) => {
-        //             setData(prod)
-        //         })
-        //         .catch((err) => console.log(err))
-        //         .finally(() => setIsLoading(false))
-
-        // }
     }, [categoryId, authorId])
 
-    console.log(data)
-
     return (
-        <div>
+        <div className='item-list-container'>
             <h1>{title}</h1>
             <LoaderComponent loading={isLoading}/>
             {!isLoading && <ItemList data={data} />}

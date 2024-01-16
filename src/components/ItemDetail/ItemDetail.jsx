@@ -17,7 +17,6 @@ const ItemDetail = ({id, author, category, img, name, price, stock, description 
         setQuantity(quantity)
         const newProduct = {id, author, category, img, name, price, stock}
         addItem(newProduct, quantity)
-        console.log(`You added ${quantity} products`)
     }
 
     return (

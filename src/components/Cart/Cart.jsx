@@ -10,15 +10,14 @@ import Button from 'react-bootstrap/Button';
 
 const Cart = () => {
     const { cart, getTotal, removeItem, clearCart, incrementItem, decrementItem } = useContext(CartContext)
-    console.log('Cart: ', cart)
 
     if (cart.length === 0) {
         return (
-            <div>
-                <h1>
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+                <h1 className='mt-5'>
                     The cart is empty! Keep shopping!
                 </h1>
-                <Link to='/'><button>Keep shopping</button></Link>
+                <Link className='mt-5' to='/'><button className="btn buttom-color btn-block btn-lg ml-2 pay-button">Keep shopping</button></Link>
             </div>
         )
     }
@@ -27,31 +26,32 @@ const Cart = () => {
             <div>
 
                 {cart.map((prod) => (
-                    <div className="container mt-5 mb-5" key={prod.id}>
+                    <div className="container mt-1 mb-1" key={prod.id}>
                         <div className="d-flex justify-content-center row">
                             <div className="col-md-8">
                                 <div className="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
-                                    <div className="mr-1"><img className="rounded" src={prod.img} width="70" /></div>
-                                    <div className="d-flex flex-column align-items-center product-details"><span className="font-weight-bold">{prod.name}</span>
-                                        <div className="d-flex flex-row product-desc">
+                                    <div className="image-container mr-1"><img className="rounded" src={prod.img} width="70" /></div>
+                                    <div className="name-container d-flex flex-column align-items-center product-details"><span className="font-weight-bold">{prod.name}</span>
+                                        <div className="d-flex flex-column product-desc">
                                             <div className="size mr-1"><span className="text-grey">Category:</span><span className="font-weight-bold">{prod.category}</span></div>
                                             <div className="color"><span className="text-grey">Author:</span><span className="font-weight-bold">{prod.author}</span></div>
                                         </div>
                                     </div>
-                                    <div className="d-flex flex-row align-items-center qty"><i className="fa fa-minus text-danger"></i>
-                                        <Button className='buttom-color' onClick={() => decrementItem(prod.id)}>-</Button>
-                                        <h5 className="text-grey mt-1 mr-1 ml-1">{prod.quantity}</h5><i className="fa fa-plus text-success"></i>
+                                    <div className="counter-container d-flex flex-row align-items-center justify-content-between qty">
+                                        <Button className='buttom-color' onClick={() => decrementItem(prod.id)}>−</Button>
+                                        <div className='counter-border'><h5>{prod.quantity}</h5></div>
                                         <Button className='buttom-color' onClick={() => incrementItem(prod.id, prod.stock)}>+</Button>
                                     </div>
-                                    <div>
-                                        <h5 className="text-grey">${prod.price}</h5>
+                                    <div className='cost-container'>
+                                        <h6>U/C</h6>
+                                        <h5 className="text-black">${prod.price}</h5>
                                     </div>
-                                    <div>
-                                        <h5 className="text-grey">${prod.price * prod.quantity}</h5>
+                                    <div className='cost-container'>
+                                        <h6>EXT.</h6>
+                                        <h5 className="text-black">${prod.price * prod.quantity}</h5>
                                     </div>
-                                    <div className="d-flex align-items-center">
-
-                                        <button onClick={() => removeItem(prod.id)}><BsTrash3 size={24} color='red' /></button>
+                                    <div className="d-flex align-items-center trash-container">
+                                        <div className='trash' onClick={() => removeItem(prod.id)}><BsTrash3 size={24} /></div>
                                     </div>
                                 </div>
                             </div>
@@ -59,9 +59,38 @@ const Cart = () => {
                     </div>
                 ))
                 }
-                <div className="d-flex flex-row align-items-center mt-3 p-2 bg-white rounded"><button onClick={() => clearCart()} className="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button">Clear cart</button></div>
-                <Link to={'/checkout'}><div className="d-flex flex-row align-items-center mt-3 p-2 bg-white rounded"><button className="btn btn-warning btn-block btn-lg ml-2 pay-button" type="button">Proceed to Pay</button></div></Link>
-                <h5>{getTotal()}</h5>
+                <div className="cart-total-container container mt-1 mb-1" >
+                    <div className="d-flex justify-content-center row">
+                        <div className="col-md-8">
+                            <div className="d-flex flex-column align-items-center justify-content-around mt-3 p-2 bg-white rounded">
+                                <h5>Order confirmation</h5>
+                                <div className="order-summary d-flex flex-row align-items-center justify-content-center">
+                                    <div className='d-flex order-summary-cost flex-column align-items-start justify-content-start'>
+                                        <div className='cost-separator'>
+                                            <span className="font-weight-bold">Subtotal:</span>
+                                            <div></div>
+                                            <span className="font-weight-bold">${getTotal().toFixed(2)}</span>
+                                        </div>
+                                        <div className='cost-separator'>
+                                            <span className="font-weight-bold">Tax:</span>
+                                            <div></div>
+                                            <span className="font-weight-bold">${(getTotal() * 0.07).toFixed(2)}</span>
+                                        </div>
+                                        <div className='cost-separator mt-5'>
+                                            <span className="font-weight-bold">Total:</span>
+                                            <div></div>
+                                            <span className="font-weight-bold">${(getTotal() * 1.07).toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                    <div className='d-flex order-summary-buttons flex-column align-items-center justify-content-around p-2'>
+                                        <Link to={'/checkout'}><button className="btn buttom-color btn-block btn-lg ml-2 pay-button" type="button">Proceed to Pay</button></Link>
+                                        <button onClick={() => clearCart()} className="btn buttom-color btn-block btn-lg ml-2 pay-button" type="button">Clear cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

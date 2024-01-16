@@ -7,9 +7,7 @@
 
 ## Preview
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-DON'T FORGET TO ADD THE GIF
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
+![image](/src/assets/bookstore.gif)
 
 ##Deploy
 [Bookstore](https://www.google.com)
@@ -73,5 +71,4 @@ sweetalert2
     Name, phone, address, email.
 
 ## Contact info
-!!!!!!!!!!!!!!!!!!!!!!!!
-LINK DE LINKEDIN
+    LinkedIn: https://www.linkedin.com/in/david-bracho-m

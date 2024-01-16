@@ -41,3 +41,97 @@ body {
 .qty i {
   font-size: 11px;
 }
+
+.image-container{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: auto;
+  margin-left: 10px;
+}
+
+.name-container{
+  text-align: center;
+  width: 35%;
+}
+
+.counter-container{
+  width: 15%;
+  text-align: center;
+  border-color: black;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 1.5px;
+}
+.counter-container h5{
+  margin-bottom: 0px;
+}
+
+.cost-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  width: 5%;
+}
+
+.trash-container{
+  margin-right: 10px;
+}
+
+.trash:hover{
+  cursor: pointer;
+}
+
+.trash{
+  color: black;
+}
+
+.trash:active{
+  color: grey;
+}
+
+.cart-total-container{
+  width: 70%;
+}
+
+.order-summary{
+  width: 100%;
+}
+
+.order-summary-cost{
+  width: 65%;
+  height: 124px;
+  border-color: black;
+  border-style: solid;
+  border-width: 1.5px;
+}
+
+.order-summary-buttons{
+  width: 35%;
+  height: 124px;
+  border-color: black;
+  border-style: solid;
+  border-width: 1.5px;
+  border-left: white;
+}
+
+.cost-separator{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cost-separator div{
+  width: 100%;
+  height: 75%;
+  border-bottom: black;
+  border-top: white;
+  border-left: white;
+  border-right: white;
+  border-width: 1px;
+  border-style: dotted;
+  
+
+}
