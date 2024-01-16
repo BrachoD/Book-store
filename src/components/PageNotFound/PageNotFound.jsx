@@ -5,7 +5,7 @@ import './PageNotFound.css'
 
 const PageNotFound = () => {
   return (
-    <div><img className='page-not-found-img' src={notFound} /></div>
+    <div className='d-flex flex-column justify-content-center align-items-center mt-5'><img className='page-not-found-img' src={notFound} /></div>
   )
 }
 
