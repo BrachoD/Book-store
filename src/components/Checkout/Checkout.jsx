@@ -99,9 +99,9 @@ const Checkout = () => {
 
     return (
         <div className='d-flex flex-column align-items-center justify-content-center'>
-            <h1 className='mt-5'>Purchase Summary</h1>
+            <h1 className='mt-3'>Purchase Summary</h1>
 
-            <div className="cart-total-container container mt- mb-1" >
+            <div className="cart-total-container container mb-1" >
                 <div className="d-flex justify-content-center row">
                     <div className="col-md-8">
                         <div className="d-flex flex-column align-items-center justify-content-around mt-3 p-2 rounded">
@@ -131,7 +131,7 @@ const Checkout = () => {
                 </div>
             </div>
 
-            <div className='form-container mt-3'>
+            <div className='form-container mt-3 mb-5'>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Row className="mb-3">
                         <Form.Group as={Col} md="6" controlId="validationCustom01">
