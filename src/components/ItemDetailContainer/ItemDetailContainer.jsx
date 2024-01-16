@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProductById } from '../../data/asyncMock'
 import ItemDetail from '../ItemDetail/ItemDetail'
-import Spinner from 'react-bootstrap/Spinner';
 import LoaderComponent from '../LoaderComponent/LoaderComponent';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../main'

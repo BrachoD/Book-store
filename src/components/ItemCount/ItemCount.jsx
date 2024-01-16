@@ -23,18 +23,6 @@ const ItemCount = ({ initialValue, stock, onAdd }) => {
             </div> 
         </div> : <h3>Not in stock☹</h3>}</div>
 
-        // <div className='d-flex justify-content-center align-items-center'>
-
-        //     <div className='buttom-margin'><Button className='buttom-color' onClick={() => onAdd(count)}>Add to cart</Button></div>
-
-
-        //     <div className='counter-buttons buttom-margin'>
-
-        //         <Button className='buttom-color' onClick={decrement}>−</Button>
-        //         <div className='counter-border'><Card.Title>{count}</Card.Title></div>
-        //         <Button className='buttom-color' onClick={increment}>+</Button>
-        //     </div>
-        // </div>
     )
 }
 

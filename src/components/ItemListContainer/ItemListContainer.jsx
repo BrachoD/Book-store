@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Spinner from 'react-bootstrap/Spinner';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './ItemListContainer.css'
-import { getProductByCategory, getProductByAuthor, getProducts } from '../../data/asyncMock'
 import ItemList from '../ItemList/ItemList'
 import { useParams } from 'react-router-dom'
 import LoaderComponent from '../LoaderComponent/LoaderComponent';
