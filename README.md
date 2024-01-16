@@ -9,11 +9,8 @@
 
 ![image](/src/assets/bookstore.gif)
 
-##Deploy
-[Bookstore](https://www.google.com)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-DON'T FORGET TO ADD THE DEPLOY
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## Deploy
+[Bookstore](https://bookstore-e-commerce-fxlg57bm9-brachods-projects.vercel.app)
 
 ## Description
 This project simulates an E-commerce platform for a book store. The project was developed as a final assignment for the React Js course on the Coderhouse platform. The objective was to encompass the use of various components, custom hooks, Firebase for hosting the project's database, and the utilization of frameworks to add visual and aesthetic touches, as well as to enhance the overall user experience.
