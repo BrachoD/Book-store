@@ -45,6 +45,9 @@ const Checkout = () => {
             timestamp: serverTimestamp()
         }
         const ordersCollection = collection(db, 'orders')
+        console.log(typeof (order.total))
+        console.log(typeof (order.timestamp))
+
 
         addDoc(ordersCollection, order)
 
