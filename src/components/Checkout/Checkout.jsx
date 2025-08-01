@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import CartContext from '../../context/CartContext'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../main'
 import './Checkout.css'
 import Swal from 'sweetalert2';
@@ -41,7 +41,8 @@ const Checkout = () => {
         const order = {
             buyer: user,
             items: cart,
-            total: (getTotal() * 1.07).toFixed(2)
+            total: Number((getTotal() * 1.07).toFixed(2)),
+            timestamp: serverTimestamp()
         }
         const ordersCollection = collection(db, 'orders')
 
@@ -76,7 +77,7 @@ const Checkout = () => {
             Swal.fire({
                 title: "Are you sure?",
                 html:
-                `<h4>Order details</h4>
+                    `<h4>Order details</h4>
                 <h6>Name: ${user.name} ${user.lastName}</h6>
                 <h6>Email: ${user.email}</h6>
                 <h6>Address: ${user.address}${user.adrress2}, ${user.city}, ${user.state}, ${user.zipCode}</h6>
