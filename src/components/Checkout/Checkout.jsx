@@ -44,10 +44,7 @@ const Checkout = () => {
             total: Number((getTotal() * 1.07).toFixed(2)),
             timestamp: serverTimestamp()
         }
-        console.log(order)
         const ordersCollection = collection(db, 'orders')
-
-
 
         addDoc(ordersCollection, order)
 
